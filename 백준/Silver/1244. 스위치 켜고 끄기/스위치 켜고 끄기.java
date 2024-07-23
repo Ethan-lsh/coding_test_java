@@ -23,6 +23,7 @@ public class Main {
 			int num = Integer.parseInt(st.nextToken());
 
 			// 남학생
+			// num 의 배수만큼 인자를 증가시켜서 탐색
 			if (gender == 1) {
 				for (int m = num; m <= N; m += num) {
 
@@ -39,6 +40,7 @@ public class Main {
 			if (gender == 2) {
 				int left = num - 1;
 				int right = num + 1;
+				// 왼쪽, 오른쪽의 범위 한계를 구한다
 				while (left > 0 && right <= N) {
 					if (arr[left] != arr[right]) {
 						break;
@@ -46,6 +48,7 @@ public class Main {
 					left--;
 					right++;
 				}
+				// 왼쪽과 오른쪽의 끝점의 범위를 순회하면서 값들을 반전시킴
 				for (int k = left + 1; k < right; k++) {
 					if (arr[k] == 1) {
 						arr[k] = 0;
