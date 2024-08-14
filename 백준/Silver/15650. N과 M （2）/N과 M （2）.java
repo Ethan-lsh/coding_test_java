@@ -1,48 +1,41 @@
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
 
 public class Main {
 
-	static int N, M;
-	static int[] arr;
-	static boolean[] isSelected;
+    static int N;
+    static int M;
+    static int[] numArr;
 
-	private static void permutations(int index, int depth) {
-		if (depth == M) {
-			StringBuilder sb = new StringBuilder();
-			for (int a : arr) {
-				sb.append(a + " ");
-			}
-			System.out.println(sb.toString());
-			return;
-		}
-		
-		for (int i = index; i <= N; i++) {
-			if (isSelected[i]) continue;  // 이미 선택된 값이면 패스
-			
-			arr[depth] = i;             // 배열에 값을 저장
-			
-			isSelected[i] = true;       // 선택 표시
-			
-			permutations(i+1, depth+1);  // 재귀 함수 실행 (현재 index=i+1)
-			 
-			isSelected[i] = false;       // 선택 표시 해제
-			
-		}
-		
-		
-	}
+    public static void main(String[] args) throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int[] input = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+        N = input[0];
+        M = input[1];
+        numArr = new int[N];
 
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
+        for(int i = 1; i <= N; i++) {
+            numArr[i - 1] = i;
+        }
 
-		N = sc.nextInt();
-		M = sc.nextInt();
+        combination(0, 0, new int[M]);
+        
+    }
 
-		arr = new int[M];
-		isSelected = new boolean[N+1];
-
-		permutations(1, 0);
-
-	}
+    public static void combination(int start, int cnt, int[] answer) {
+        if(cnt == M) {
+            for(int i = 0; i < M; i++) {
+                System.out.print(answer[i] + " ");
+            }
+            System.out.println();
+        } else {
+            for(int i = start; i < N; i++) {
+                answer[cnt] = numArr[i];
+                combination(i + 1,cnt + 1, answer);
+            }
+        }
+    }
 
 }
