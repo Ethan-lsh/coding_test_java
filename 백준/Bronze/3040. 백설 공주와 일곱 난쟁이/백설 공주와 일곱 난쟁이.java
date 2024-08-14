@@ -3,37 +3,39 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Main {
-    static int[] numArr;
-    public static void main(String[] args) throws IOException{
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        numArr = new int[9];
-        int sum = 0;
-        int fake1 = 0;
-        int fake2 = 0;
 
-        for(int i = 0; i < 9; i++) {
-            numArr[i] = Integer.parseInt(br.readLine());
-            sum += numArr[i];
-        }
+	static int sum; // 아홉 난장이 숫자의 합
+	static int[] arr; // 아홉 난장이의 값을 담는 배열
 
-        Tag : for(int i = 0; i < 8; i++) {
-            for(int j = i + 1; j < 9; j ++) {
-                int sum_temp = numArr[i] + numArr[j];
-                if (sum - sum_temp == 100) {
-                    fake1 = i;
-                    fake2 = j;
-                    break Tag;
-                }
-            }
-        }
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringBuilder sb = new StringBuilder();
 
-        for(int i = 0; i < 9; i++) {
-            if(i == fake1 || i == fake2) {
-                continue;
-            }
-            System.out.println(numArr[i]);
-        }
+		arr = new int[9];
 
-    }
-    
+		sum = 0;
+		for (int i = 0; i < 9; i++) {
+			sum += arr[i] = Integer.parseInt(br.readLine());
+		}
+
+		/**
+		 * 'i, j=i+1'을 시작범위로 배열을 순회. i, j 난쟁이의 숫자를 총합에서 뺐을 때, 100이 된다면 i와j는 일곱난쟁이가 아니다.
+		 */
+		loop: for (int i = 0; i < 8; i++) {
+			for (int j = i + 1; j < 9; j++) {
+				if (arr[i] + arr[j] == sum - 100) {
+					// 값을 0으로 변경
+					arr[i] = arr[j] = 0;
+                    break loop;
+				}
+			}
+		}
+
+		for (int i = 0; i < 9; i++)
+			if (arr[i] > 0)
+				sb.append(arr[i]).append('\n');
+
+		System.out.print(sb);
+
+	}
 }
