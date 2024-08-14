@@ -1,36 +1,61 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.Arrays;
+import java.util.StringTokenizer;
 
 public class Main {
 
-    static int N;
-    static int M;
-    static int[] numArr;
+	static int N, M;
+	static int[] arr, arr2;
+	static boolean[] isSelected;
+	static int ans;
+	
+	static void permutation(int depth) {
+		if (depth == 3) {
+			int sum = Arrays.stream(arr2).sum();
+			
+			if (sum <= M) {
+				ans = Math.max(ans, sum);
+			}
+			return;
+		}
+		
+		for (int i = 0; i < N; i++) {
+			if (isSelected[i]) continue;
+			
+			arr2[depth] = arr[i];
+			
+			isSelected[i] = true;
+			
+			permutation(depth+1);
+			
+			isSelected[i] = false;
+			
+		}
+		
+	}
+	
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		
+		isSelected = new boolean[N];
 
-    public static void main(String[] args) throws IOException{
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int[] temp = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
-        numArr = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
-        N = temp[0];
-        M = temp[1];
-        int sum = 0;
-        int answer = -1;
+		arr = new int[N];
+		arr2 = new int[3];
+		
+		st = new StringTokenizer(br.readLine());
+		for (int i = 0; i < N; i++) {
+			arr[i] = Integer.parseInt(st.nextToken());
+		}
+		
+		permutation(0);
+		
+		System.out.println(ans);
+		
+	}
 
-        for(int i = 0; i < N-2; i++) {
-            for(int j = i + 1; j < N-1; j++) {
-                for(int k = j + 1; k < N; k++) {
-                    sum = numArr[i] + numArr[j] + numArr[k];
-                    if(answer == -1 && M >= sum) {
-                        answer = sum;
-                    } else if (M >= sum && sum > answer){
-                        answer = sum;
-                    }
-                }
-            }
-        }
-
-        System.out.println(answer);
-    }
 }
