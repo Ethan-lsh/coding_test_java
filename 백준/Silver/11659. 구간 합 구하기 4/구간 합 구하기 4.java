@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
+import java.util.StringTokenizer;
 
 public class Main {
 
@@ -13,15 +14,16 @@ public class Main {
 
     public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int[] input1 = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
-        N = input1[0];
-        M = input1[1];
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
         sumArr = new int[N + 1];
 
-        int[] inputArr = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+        st = new StringTokenizer(br.readLine());
 
         for(int i = 0; i < N; i++) {
-            allSum += inputArr[i];
+            allSum += Integer.parseInt(st.nextToken());
             sumArr[i + 1] = allSum;
         }
 
@@ -30,9 +32,11 @@ public class Main {
             int start = input2[0];
             int end = input2[1];
 
-            sb.append(sumArr[end] - sumArr[start - 1] + "\n");
+            int result = sumArr[end] - sumArr[start - 1];
+
+            sb.append(result).append("\n");
         }
-        
+
         System.out.print(sb);
 
     }
