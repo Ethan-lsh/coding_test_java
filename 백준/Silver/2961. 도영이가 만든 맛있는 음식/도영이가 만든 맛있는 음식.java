@@ -1,51 +1,50 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
 
 public class Main {
-    static int N;
-    static int[] sourArr;
-    static int[] bitterArr;
-    static int answer;
-    public static void main(String[] args) throws IOException{
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
 
-        st = new StringTokenizer(br.readLine());
-        N = Integer.parseInt(st.nextToken());
-        sourArr = new int[N];
-        bitterArr = new int[N];
+	static int N;
+	static int ans = 100000;
+	static int[][] arr;
+	static boolean[] isSeleceted;
 
-        for(int i = 0; i < N; i++) {
-            st = new StringTokenizer(br.readLine());
-            sourArr[i] = Integer.parseInt(st.nextToken());
-            bitterArr[i] = Integer.parseInt(st.nextToken());
-            if( i == 0 ) {
-                answer = Math.abs(sourArr[0] - bitterArr[0]);
-            }
-        }
+	static void combination(int index, int sour, int stub) {
+		if (index == N) {
+			if (ans > Math.abs(sour - stub) & stub !=0) {
+				ans = Math.abs(sour - stub);
+			}
+			return;
+		}
+		
+		isSeleceted[index] = true;
+		combination(index + 1, sour * arr[index][0], stub + arr[index][1]);
+		
+		isSeleceted[index] = false;
+		combination(index + 1, sour, stub);
+		
+	}
+	
+	
 
-        for(int i = 1; i <= N; i++) {
-            combination(0, 0, i, 1, 0);
-        }
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
 
-        System.out.println(answer);
+		N = sc.nextInt();
 
-    }
+		arr = new int[N][2];
+		isSeleceted = new boolean[N];
 
-    public static void combination(int start, int cnt, int r, int sour, int bitter) {
-        if(cnt == r) {
-            answer = Math.min(answer, Math.abs(sour - bitter));
-        } else {
-            for(int i = start; i < N; i++) {
-                sour *= sourArr[i];
-                bitter += bitterArr[i];
-                combination(i + 1, cnt + 1, r, sour, bitter);
-                sour /= sourArr[i];
-                bitter -= bitterArr[i];
-            }
-        }
-    }
-    
+		
+		for (int n = 0; n < N; n++) {
+			arr[n][0] = sc.nextInt(); // 신맛
+			arr[n][1] = sc.nextInt(); // 쓴맛
+		}
+
+		combination(0, 1, 0);
+		System.out.println(ans);
+
+	}
+
 }
