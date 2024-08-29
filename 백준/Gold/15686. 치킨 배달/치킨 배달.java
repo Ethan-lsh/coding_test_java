@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+/**
+ * 메모리:13164kb, 실행시간:132ms
+ */
 public class Main {
 
 	static int N, M; // N:도시 크기, M:선택할 치킨집 수
@@ -40,6 +43,7 @@ public class Main {
 			}
 		}
 
+		// M개의 치킨집을 선택하기 위한 조합을 실행
 		combination(0, 0);
 
 		System.out.println(ans);
@@ -47,9 +51,9 @@ public class Main {
 
 	static void combination(int index, int cnt) {
 		if (cnt == M) { // M개의 치킨집을 모두 고름
-			int result = checkDistance();
+			int result = checkDistance();  // 현재 조합에 대한 도시의 치킨 거리
 			
-			ans = Math.min(ans, result);
+			ans = Math.min(ans, result);  // 도시의 치킨 거리를 최소값으로 업데이트
 			
 			return;
 		}
@@ -60,17 +64,21 @@ public class Main {
 		}
 	}
 
-	// 최단 거리
+	/**
+	 * 도시의 치킨 거리를 구하는 함수
+	 * @return 도시의 치킨 거리
+	 */
 	static int checkDistance() {
-		int city_distance = 0;
-
+		int city_distance = 0;  // 도시 치킨 거리 초기화
+ 
+		// 집을 기준으로 선택된 치킨집들을 순회한다
 		for (int[] house : houses) {
-			int chicken_distance = Integer.MAX_VALUE;
-			for (int[] chicken : isSelected) {   // 선택된 치킨집 만을 순회해야 한다
+			int chicken_distance = Integer.MAX_VALUE;  // 임의의 치킨 거리 
+			for (int[] chicken : isSelected) {   // !중요. 선택된 치킨집 만을 순회해야 한다
 				chicken_distance = Math.min(chicken_distance,
 						Math.abs(house[0] - chicken[0]) + Math.abs(house[1] - chicken[1]));
 			}
-			city_distance += chicken_distance;
+			city_distance += chicken_distance;  // 도시의 치킨 거리 업데이트
 		}
 		return city_distance;
 	}
