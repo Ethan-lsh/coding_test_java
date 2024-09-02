@@ -7,48 +7,6 @@ import java.util.StringTokenizer;
 
 public class Main {
 	
-	static class Set{
-		List<Integer> set;
-
-		public Set(List<Integer> set) {
-			super();
-			this.set = set;
-		}
-		
-		public void add(int x) {
-			set.add(x);
-		}
-		
-		public void remove(int x) {
-			for (int i = 0; i < set.size(); i++) {
-				if (set.get(i) == x) {
-					set.remove(i);
-					break;
-				}
-			}
-		}
-		
-		public boolean check(int x) {
-			if (set.contains(Integer.valueOf(x))) return true;
-			return false;
-		}
-		
-		public void toggle(int x) {
-			if (set.contains(Integer.valueOf(x))) set.remove(Integer.valueOf(x));
-			else set.add(x);
-		}
-		
-		public void all() {
-			set.clear();
-			for (int i = 1; i <= 20; i++) set.add(i);
-		}
-		
-		public void empty() {
-			set.clear();
-		}
-		
-	}
-
 	public static void main(String[] args) throws IOException {
 		StringBuilder sb = new StringBuilder();
 		
@@ -56,8 +14,7 @@ public class Main {
 		
 		int M = Integer.parseInt(br.readLine());
 
-		Set s = new Set(new ArrayList<>());
-		
+		int S = 0;
 		for (int i = 0; i < M; i++) {
 			StringTokenizer st = new StringTokenizer(br.readLine());
 			
@@ -65,29 +22,28 @@ public class Main {
 			
 			switch (cmd) {
 			case "add":
-				s.add(Integer.parseInt(st.nextToken()));
+				S |= (1 << Integer.parseInt(st.nextToken()));
 				break;
 			case "check":
-				sb.append(s.check(Integer.parseInt(st.nextToken())) ? 1 : 0);
-				sb.append("\n");
+				sb.append((S & (1 << Integer.parseInt(st.nextToken()))) != 0? 1 : 0).append("\n");
 				break;
 			case "remove":
-				s.remove(Integer.parseInt(st.nextToken()));
+				S &= ~(1 << Integer.parseInt(st.nextToken()));
 				break;
 			case "toggle":
-				s.toggle(Integer.parseInt(st.nextToken()));
+				S ^= (1 << Integer.parseInt(st.nextToken()));
 				break;
 			case "all":
-				s.all();
+				S = (1 << 21) - 1;
 				break;
 			case "empty":
-				s.empty();
+				S = 0;
 				break;
 			}
 			
 		}
 		
-		System.out.println(sb.toString());
+		System.out.println(sb);
 		
 	}
 
