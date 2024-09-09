@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
+import java.util.StringTokenizer;
 
 public class Solution {
 
@@ -18,7 +19,12 @@ public class Solution {
         for(int tc = 1; tc <= testCase; tc++) {
             sumAnswer = 0;
             N = Integer.parseInt(br.readLine());
-            weightArr = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+            
+            weightArr = new int[N];
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            for (int i = 0; i < N; i++)
+            	weightArr[i] = Integer.parseInt(st.nextToken());
+            
             visited = new boolean[N];
             answer = new int[N];
             orderPermutation(0);
@@ -45,7 +51,7 @@ public class Solution {
     }
 
     // 부분집합을 사용하여 왼쪽과 오른쪽에 추를 올린 경우의 수를 고려한다
-    public static void backSum(int cnt, int rightSum, int leftSum) {
+    public static void backSum(int cnt, int leftSum, int rightSum) {
         if (leftSum < rightSum) return;
         if (cnt == N) {
             sumAnswer++;
