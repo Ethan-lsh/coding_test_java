@@ -6,7 +6,7 @@ import java.util.Arrays;
 public class Solution {
 
     static int N;
-    static int[] weightArr;
+    static int[] weightArr, answer;
     static boolean[] visited;
     static int sumAnswer;
 
@@ -20,16 +20,16 @@ public class Solution {
             N = Integer.parseInt(br.readLine());
             weightArr = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
             visited = new boolean[N];
-
-            orderPermutation(0, new int[N]);
+            answer = new int[N];
+            orderPermutation(0);
             sb.append("#" + tc + " " + sumAnswer).append("\n");
         }
         System.out.println(sb);
     }
 
-    public static void orderPermutation(int depth, int[] answer) {
+    public static void orderPermutation(int depth) {
         if(depth == N) {
-            backSum(answer, 0, 0, 0);
+            backSum(0, 0, 0);
         } else {
             for(int i = 0; i < N; i++) {
                 if(visited[i]) {
@@ -37,27 +37,22 @@ public class Solution {
                 } else {
                     visited[i] = true;
                     answer[depth] = weightArr[i];
-                    orderPermutation(depth + 1, answer);
+                    orderPermutation(depth + 1);
                     visited[i] = false;
                 }
             }
         }
     }
 
-    public static void backSum(int[] combArr, int start, int rightSum, int leftSum) {
-        if(start == N) {
+    // 부분집합을 사용하여 왼쪽과 오른쪽에 추를 올린 경우의 수를 고려한다
+    public static void backSum(int cnt, int rightSum, int leftSum) {
+        if (leftSum < rightSum) return;
+        if (cnt == N) {
             sumAnswer++;
-        } else {
-            leftSum += combArr[start];
-            backSum(combArr, start + 1, rightSum, leftSum);
-            
-            leftSum -= combArr[start];
-            rightSum += combArr[start];
-
-            if(leftSum >= rightSum) {
-                backSum(combArr, start + 1, rightSum, leftSum);
-            }
+            return;
         }
+        backSum(cnt + 1, leftSum, rightSum+answer[cnt]);
+        backSum(cnt + 1, leftSum + answer[cnt], rightSum);
     }
     
 }
