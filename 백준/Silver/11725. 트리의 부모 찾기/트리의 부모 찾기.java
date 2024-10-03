@@ -18,7 +18,8 @@ public class Main {
 	static int[] parents;
 
 	public static void main(String[] args) {
-
+		StringBuilder sb = new StringBuilder();
+		
 		Scanner sc = new Scanner(System.in);
 
 		N = sc.nextInt();
@@ -44,8 +45,10 @@ public class Main {
 		bfs(1);
 		
 		for (int i = 2; i <= N; i++) {
-			System.out.println(parents[i]);
+			sb.append(parents[i]).append("\n");
 		}
+		
+		System.out.println(sb);
 	}
 	
 	private static void bfs(int start) {
